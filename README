@@ -1,0 +1,33 @@
+Authors: Morgan Jones (morgan@morganjones.org)
+         with modifications by Frank Fossa
+Date: 02/12/04
+
+  Description: This is a workaround to allow mailman to work with
+      iPlanet/Sun ONE Messenger.  iPlanet/Sun ONE Messenger requires a
+      mail delivery command to be registered with argument list with
+      the MTA prior to execution.  Mailman requires commands like the
+      below to be run for each mailing list.  The problem is that for
+      each new mailing list that's created, three new commands would
+      need to be registered with the mta.  This would quickly get
+      cumbersome.
+
+      ## morgantest mailing list
+      ## created: 14-Oct-2002 root
+      morgantest:         "|/opt/mailman/mail/mailman post morgantest"
+      morgantest-admin:   "|/opt/mailman/mail/mailman mailowner morgantest"
+      morgantest-bounces: "|/opt/mailman/mail/mailman bounces morgantest"
+      morgantest-confirm: "|/opt/mailman/mail/mailman confirm morgantest"
+      morgantest-join:    "|/opt/mailman/mail/mailman join morgantest"
+      morgantest-leave:   "|/opt/mailman/mail/mailman leave morgantest"
+      morgantest-owner:   "|/opt/mailman/mail/mailman owner morgantest"
+      morgantest-request: "|/opt/mailman/mail/mailman request morgantest"
+      morgantest-subscribe: "|/opt/mailman/mail/mailman subscribe morgantest"
+      morgantest-unsubscribe: "|/opt/mailman/mail/mailman unsubscribe morgantest"
+      morgantest-owner:   morgantest-admin
+
+      Rather than registering commands such as the above with the MTA,
+      place this perl script it <messaging
+      root>/msg-<instance>/imta/programs and set any Mailman aliases
+      to deliver to it.  The ldap entries for the above aliases are
+      below the script.
+
